@@ -13,53 +13,59 @@ local function custom_path_display(opts, path)
     return path
   end
 
-  local segment = segments[2]
-
   local display_name = ""
-  if segment ~= nil then
-    if string.find(segment, "Faithlife.AcademicDesk.Client") then
+  if path ~= nil then
+    if string.find(path, "Faithlife.AcademicDesk.Client") then
       display_name = "[Desk.C]"
-    elseif string.find(segment, "Faithlife.AcademicDesk.Server") then
+    elseif string.find(path, "Faithlife.AcademicDesk.Server") then
       display_name = "[Desk.S]"
-    elseif string.find(segment, "Faithlife.AcademicPortal.Client") then
+    elseif string.find(path, "Faithlife.AcademicPortal.Client") then
       display_name = "[Portal.C]"
-    elseif string.find(segment, "Faithlife.AcademicPortal.Server") then
+    elseif string.find(path, "Faithlife.AcademicPortal.Server") then
       display_name = "[Portal.S]"
-    elseif string.find(segment, "Faithlife.AcademicServices.AcademicApi.v1.WebApi") then
+    elseif string.find(path, "Faithlife.AcademicServices.AcademicApi.v1.WebApi") then
       display_name = "[WebApi]"
-    elseif string.find(segment, "Faithlife.AcademicServices.Subscriber") then
+    elseif string.find(path, "Faithlife.AcademicServices.Subscriber") then
       display_name = "[Subscriber]"
-    elseif string.find(segment, "Faithlife.AcademicServices.Services") then
+    elseif string.find(path, "Faithlife.AcademicServices.Services") then
       display_name = "[Services]"
-    elseif string.find(segment, "Faithlife.AcademicServices.Scheduler") then
+    elseif string.find(path, "Faithlife.AcademicServices.Scheduler") then
       display_name = "[Scheduler]"
-    elseif string.find(segment, "Faithlife.AcademicServices.JobConsole") then
+    elseif string.find(path, "Faithlife.AcademicServices.JobConsole") then
       display_name = "[JobConsole]"
-    elseif string.find(segment, "Faithlife.AcademicServices.Data.Entities") then
+    elseif string.find(path, "Faithlife.AcademicServices.Data.Entities") then
       display_name = "[Entities]"
-    elseif string.find(segment, "Faithlife.AcademicServices.Data") then
+    elseif string.find(path, "Faithlife.AcademicServices.Data") then
       display_name = "[Data]"
-    elseif string.find(segment, "Faithlife.AcademicServices.IntegrationTests") then
+    elseif string.find(path, "Faithlife.AcademicServices.IntegrationTests") then
       display_name = "[IntegrationTests]"
-    elseif string.find(segment, "Faithlife.AcademicServices.AcademicApi.Tests") then
+    elseif string.find(path, "Faithlife.AcademicServices.AcademicApi.Tests") then
       display_name = "[AcademicApi.Tests]"
-    elseif string.find(segment, "Faithlife.AcademicServices.LtiProvider.v1.Web.Tests") then
+    elseif string.find(path, "Faithlife.AcademicServices.LtiProvider.v1.Web.Tests") then
       display_name = "[LtiProvider.Tests]"
+    elseif string.find(path, "Faithlife.AcademicServices.LtiProvider.v1.Web") then
+      display_name = "[LtiProvider]"
     end
   end
-  if display_name == "" or segment == nil then
+  if display_name == "" then
     return path
   end
 
   -- Get the remaining path after the segment
-  local index = string.find(path, segment) + #segment + 1
-  local sub_path = string.sub(path, index)
-
-  -- Get path past "/src" if possible
-  sub_path = vim.fn.substitute(sub_path, "^src", "", "")
+  local lastPart = string.match(path, "/([^/]+)$")
 
   -- Return the formatted path
-  return display_name .. " " .. sub_path
+  return display_name .. " " .. lastPart
+end
+
+local function remove_reference_line(opts, path)
+  local segments = vim.split(path, " | ")
+
+  if #segments > 1 then
+    return segments[1]
+  end
+
+  return path
 end
 
 return {
@@ -80,6 +86,8 @@ return {
         return vim.fn.executable 'make' == 1
       end,
     },
+    { 'nvim-telescope/telescope-github.nvim' },
+    -- { 'nvim-telescope/telescope-dap.nvim' },
   },
   config = function()
     -- [[ Configure Telescope ]]
@@ -89,17 +97,32 @@ return {
         show_dotfiles = true,
         file_ignore_patterns = { "%.g%.cs$", "%.png$" },
         path_display = custom_path_display,
+        shorten_path = true,
         mappings = {
           i = {
             ['<C-u>'] = false,
-            ['<C-d>'] = false,
+            ['<C-d>'] = require('telescope.actions').delete_buffer
           },
         },
+      },
+      pickers = {
+        jumplist = {
+          path_display = {"tail"},
+          previewer = true,
+          theme = 'ivy'
+        },
+        lsp_references = {
+          fname_width = 100,
+          previewer = true
+        }
       },
     }
 
     -- Enable telescope fzf native, if installed
     pcall(require('telescope').load_extension, 'fzf')
+
+    -- Enable telescope dap
+    -- pcall(require('telescope').load_extension, 'dap')
 
     -- See `:help telescope.builtin`
     vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -119,5 +142,6 @@ return {
     vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
     vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+    vim.keymap.set('n', '<leader>sj', require('telescope.builtin').jumplist, { desc = '[S]earch [J]umplist' })
   end
 }

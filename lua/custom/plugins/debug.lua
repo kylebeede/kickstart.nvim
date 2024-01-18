@@ -43,6 +43,7 @@ return {
     vim.keymap.set('n', '<leader>dB', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end, { desc = 'Set breakpoint' })
+    vim.keymap.set('n', '<leader>de', dapui.eval, { desc = 'Eval window' })
 
     -- Dap adapter setup
     dap.adapters.netcoredbg = {
