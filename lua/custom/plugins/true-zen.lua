@@ -1,7 +1,7 @@
 return {
 	"Pocco81/true-zen.nvim",
 	config = function()
-		 require("true-zen").setup {
+		require("true-zen").setup {
 			modes = {
 				options = {
 					number = true,
@@ -9,7 +9,6 @@ return {
 					ruler = true,
 				},
 			},
-		 }
+		}
 	end,
 }
-

@@ -107,7 +107,7 @@ return {
       },
       pickers = {
         jumplist = {
-          path_display = {"tail"},
+          path_display = { "tail" },
           previewer = true,
           theme = 'ivy'
         },

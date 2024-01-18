@@ -47,24 +47,24 @@ return {
 
     -- Dap adapter setup
     dap.adapters.netcoredbg = {
-      type = 'executable';
-      command = '/usr/local/netcoredbg';
-      args = {'--interpreter=vscode'};
+      type = 'executable',
+      command = '/usr/local/netcoredbg',
+      args = { '--interpreter=vscode' },
     }
 
     -- Dap configuration setup
     dap.configurations.cs = {
       -- Used with test runner
       {
-        type = 'netcoredbg';
-        name = "netcoredbg";
-        request = 'attach';
+        type = 'netcoredbg',
+        name = "netcoredbg",
+        request = 'attach',
       },
       -- Used to attach to process
       {
-        type = 'netcoredbg';
-        name = "netcoredbg - pick";
-        request = 'attach';
+        type = 'netcoredbg',
+        name = "netcoredbg - pick",
+        request = 'attach',
         processId = function() return require('dap.utils').pick_process({ filter = "Faithlife" }) end
       },
     }

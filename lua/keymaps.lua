@@ -37,4 +37,3 @@ vim.keymap.set('n', '<leader>e', function()
   end
   vim.cmd 'NvimTreeToggle'
 end, { desc = '[E]xplorer' }) -- toggle file explorer
-

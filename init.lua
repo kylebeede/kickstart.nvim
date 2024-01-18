@@ -1,6 +1,6 @@
 require('options')
 
----------- CONFIGURE LAZY ---------- 
+---------- CONFIGURE LAZY ----------
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -17,7 +17,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 
----------- INSTALL PLUGINS ---------- 
+---------- INSTALL PLUGINS ----------
 --  Configure plugins using the `config` key.
 --  or configure plugins after the setup call
 --  as they will be available in your neovim runtime.
@@ -70,7 +70,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -156,13 +156,13 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter-context',
     opts = {
-      enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-      max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-      min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+      enable = true,            -- Enable this plugin (Can be enabled/disabled later via commands)
+      max_lines = 0,            -- How many lines the window should span. Values <= 0 mean no limit.
+      min_window_height = 0,    -- Minimum editor window height to enable context. Values <= 0 mean no limit.
       line_numbers = true,
       multiline_threshold = 20, -- Maximum number of lines to show for a single context
-      trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-      mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+      trim_scope = 'outer',     -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+      mode = 'cursor',          -- Line used to calculate context. Choices: 'cursor', 'topline'
       -- Separator between context and content. Should be a single character string, like '-'.
       -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
       separator = nil,
@@ -181,8 +181,8 @@ require('lazy').setup({
 
   -- Open links in browser
   {
-      "lalitmee/browse.nvim",
-      dependencies = { "nvim-telescope/telescope.nvim" },
+    "lalitmee/browse.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
   },
 
   require 'kickstart.plugins.autoformat',
@@ -191,7 +191,7 @@ require('lazy').setup({
 }, {})
 
 
----------- CONFIGURE TREESITTER ---------- 
+---------- CONFIGURE TREESITTER ----------
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
 vim.defer_fn(function()
@@ -261,7 +261,7 @@ vim.defer_fn(function()
 end, 0)
 
 
----------- CONFIGURE LSP ---------- 
+---------- CONFIGURE LSP ----------
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
   -- Helper function to more easily define LSP related mappings
@@ -302,7 +302,7 @@ local on_attach = function(_, bufnr)
 end
 
 
----------- CONFIGURE MASON ---------- 
+---------- CONFIGURE MASON ----------
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require('mason').setup()
@@ -314,7 +314,7 @@ require('mason-lspconfig').setup()
 local servers = {
   -- rust_analyzer = {},
   tsserver = {},
-  html = { filetypes = { 'html', 'twig', 'hbs'} },
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
 
   lua_ls = {
     Lua = {
@@ -348,7 +348,7 @@ mason_lspconfig.setup_handlers {
 }
 
 
----------- CONFIGURE NVIM-CMP ---------- 
+---------- CONFIGURE NVIM-CMP ----------
 -- See `:help cmp`
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
@@ -400,7 +400,7 @@ cmp.setup {
 vim.cmd [[colorscheme nightfly]]
 
 -- Configure vim-rhubarb
-vim.g.github_enterprise_urls = {'git.faithlife.dev'}
+vim.g.github_enterprise_urls = { 'git.faithlife.dev' }
 -- Because netrw is disabled, :GBrowse requires a custom :Browse implementation. Mac specific
 vim.cmd [[
   command! -nargs=* -complete=file Browse execute '!open ' .. shellescape(<q-args>)
