@@ -4,7 +4,7 @@ return {
   'neovim/nvim-lspconfig',
   config = function()
     -- Switch for controlling whether you want autoformatting.
-    --  Use :KickstartFormatToggle to toggle autoformatting on or off
+    -- Use :KickstartFormatToggle to toggle autoformatting on or off
     local format_is_enabled = true
     vim.api.nvim_create_user_command('KickstartFormatToggle', function()
       format_is_enabled = not format_is_enabled
@@ -12,8 +12,8 @@ return {
     end, {})
 
     -- Create an augroup that is used for managing our formatting autocmds.
-    --      We need one augroup per client to make sure that multiple clients
-    --      can attach to the same buffer without interfering with each other.
+    -- We need one augroup per client to make sure that multiple clients
+    -- can attach to the same buffer without interfering with each other.
     local _augroups = {}
     local get_augroup = function(client)
       if not _augroups[client.id] then
@@ -42,36 +42,32 @@ return {
 
         -- Only attach to clients that support document formatting
         if not client.server_capabilities.documentFormattingProvider then
-          print(client.name .. ' does not support formatting')
+          return
+        end
+
+        -- Supposedly bad...? Don't need it anyway with eslint
+        if client.name == 'tsserver' then
           return
         end
 
         -- Create an autocmd that will run *before* we save the buffer.
         --  Run the formatting command for the LSP that has just attached.
-        if client.name == 'tsserver' then
-          -- vim.api.nvim_create_autocmd('BufWritePre', {
-          --   group = get_augroup(client),
-          --   buffer = bufnr,
-          --   command = 'EslintFixAll',
-          -- })
-        else
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            group = get_augroup(client),
-            buffer = bufnr,
-            callback = function()
-              if not format_is_enabled then
-                return
-              end
+        vim.api.nvim_create_autocmd('BufWritePre', {
+          group = get_augroup(client),
+          buffer = bufnr,
+          callback = function()
+            if not format_is_enabled then
+              return
+            end
 
-              vim.lsp.buf.format {
-                async = false,
-                filter = function(c)
-                  return c.id == client.id
-                end,
-              }
-            end,
-          })
-        end
+            vim.lsp.buf.format {
+              async = false,
+              filter = function(c)
+                return c.id == client.id
+              end,
+            }
+          end,
+        })
       end,
     })
   end,
