@@ -18,6 +18,14 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
+-- Window resizing
+vim.keymap.set('n', '+', '<cmd>vert res +5<cr>', { desc = 'Increase window width 5' })
+vim.keymap.set('n', '-', '<cmd>vert res -5<cr>', { desc = 'Decrease window width 5' })
+
+-- File switching from jumps
+-- vim.keymap.set('n', '<C-O>', '<cmd>lua JumpToBufferInJumplist(-1)<cr>', { desc = 'Jump to previous file in jumplist' })
+-- vim.keymap.set('n', '<C-I>', '<cmd>lua JumpToBufferInJumplist(1)<cr>', { desc = 'Jump to next file in jumplist' })
+
 -- document existing key chains
 require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },

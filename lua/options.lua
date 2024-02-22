@@ -8,7 +8,7 @@ vim.g.maplocalleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.opt.fillchars = { eob = ' ' }
+vim.opt.fillchars = { eob = ' ', diff = '/' }
 
 vim.opt.autoindent = true
 vim.opt.tabstop = 4
@@ -61,3 +61,5 @@ vim.filetype.add {
     fsd = 'fsd',
   },
 }
+
+-- vim: ts=2 sts=2 sw=2 et
