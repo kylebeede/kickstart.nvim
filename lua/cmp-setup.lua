@@ -1,0 +1,64 @@
+---------- CONFIGURE NVIM-CMP ----------
+-- See `:help cmp`
+
+local luasnip = require('luasnip')
+-- require('luasnip.loaders.from_vscode').lazy_load()
+local cmp = require('cmp')
+-- local defaults = require('cmp.config.default')()
+
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  sources = cmp.config.sources(
+    {
+      { name = 'nvim_lsp', group_index = 1 },
+      { name = 'path',     group_index = 1 },
+      -- { name = 'luasnip' },
+    },
+    {
+      { name = 'buffer', group_index = 2 },
+    },
+    {
+      { name = 'copilot', group_index = 3 },
+    }
+  ),
+  mapping = cmp.mapping.preset.insert {
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete {},
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<S-CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<C-CR>'] = function(fallback)
+      cmp.abort()
+      fallback()
+    end,
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+        -- elseif luasnip.expand_or_locally_jumpable() then
+        --   luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+        -- elseif luasnip.locally_jumpable(-1) then
+        --   luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  },
+}
+
+-- vim: ts=2 sts=2 sw=2 et

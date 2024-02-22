@@ -1,20 +1,18 @@
--- Configure options
 require 'options'
 
--- Install lazy plugin manager
 require 'lazy-setup'
 
--- Configure plugins
 require 'plugins'
 
--- Configure telescope
 require 'telescope-setup'
 
--- Configure treesitter
 require 'treesitter-setup'
 
--- LSP setup
 require 'lsp-setup'
+
+require 'cmp-setup'
+
+require 'copilot-setup'
 
 -- Configure keymaps & whichkey
 require 'keymaps'

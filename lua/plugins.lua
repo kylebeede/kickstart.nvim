@@ -178,6 +178,80 @@ require('lazy').setup({
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
 
+  {
+    "zbirenbaum/copilot.lua",
+    enabled = true,
+    cmd = "Copilot",
+    build = ":Copilot auth",
+    event = "InsertEnter",
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
+    end
+  },
+
+  {
+    "kwkarlwang/bufjump.nvim",
+    config = function()
+      require("bufjump").setup({
+        forward = "<C-n>",
+        backward = "<C-p>",
+        on_success = nil
+      })
+    end,
+  },
+
+  -- Autocompletion
+  {
+    'hrsh7th/nvim-cmp',
+    event = "InsertEnter",
+    dependencies = {
+      -- Snippet Engine & its associated nvim-cmp source
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+
+      -- Adds LSP completion capabilities
+      'hrsh7th/cmp-nvim-lsp',
+
+      -- Adds a number of user-friendly snippets
+      -- 'rafamadriz/friendly-snippets',
+    },
+  },
+
+  {
+    "Pocco81/true-zen.nvim",
+    config = function()
+      require("true-zen").setup {
+        modes = {
+          options = {
+            number = true,
+            relativenumber = true,
+            ruler = true,
+          },
+        },
+      }
+    end,
+  },
+
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      -- Creates a beautiful debugger UI
+      'rcarriga/nvim-dap-ui',
+
+      -- Installs the debug adapters for you
+      'williamboman/mason.nvim',
+      'jay-babu/mason-nvim-dap.nvim',
+
+      -- Add your own debuggers here
+      'leoluz/nvim-dap-go',
+    },
+    config = (require 'debug-setup').dap_setup
+  },
+
+
   require 'kickstart.plugins.autoformat',
 
   { import = 'custom.plugins' },

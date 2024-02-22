@@ -1,4 +1,4 @@
-function split(inputstr, sep)
+local function split(inputstr, sep)
   if sep == nil then
     sep = "%s"
   end
