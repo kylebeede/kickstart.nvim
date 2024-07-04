@@ -13,10 +13,16 @@ vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Focus panel below' })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Focus panel above' })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+-- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+-- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+vim.keymap.set('n', '<leader>q', '<cmd>TroubleToggle<cr>', { desc = 'Open diagnostics list' })
+vim.keymap.set('n', '[d', function()
+  require('trouble').previous { skip_groups = true, jump = true }
+end, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', function()
+  require('trouble').next { skip_groups = true, jump = true }
+end, { desc = 'Go to next diagnostic message' })
 
 -- Window resizing
 vim.keymap.set('n', '+', '<cmd>vert res +5<cr>', { desc = 'Increase window width 5' })

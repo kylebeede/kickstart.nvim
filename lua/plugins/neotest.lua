@@ -1,19 +1,21 @@
 return {
-	"nvim-neotest/neotest",
+	'nvim-neotest/neotest',
 	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"antoinemadec/FixCursorHold.nvim",
-		"Issafalcon/neotest-dotnet"
+		'nvim-neotest/nvim-nio',
+		'nvim-lua/plenary.nvim',
+		'antoinemadec/FixCursorHold.nvim',
+		'nvim-treesitter/nvim-treesitter',
+		'Issafalcon/neotest-dotnet',
 	},
 	config = function()
 		local neotest = require 'neotest'
-		neotest.setup({
+		neotest.setup {
 			adapters = {
-				require("neotest-dotnet")({
+				require 'neotest-dotnet' {
 					dap = { justMyCode = false },
-				}),
-			}
-		})
+				},
+			},
+		}
 
 		vim.keymap.set('n', '<leader>tn', neotest.run.run, { desc = 'Test Nearest' })
 		vim.keymap.set('n', '<leader>tf', [[:lua require('neotest').run.run(vim.fn.expand('%'))<CR>]],
@@ -22,5 +24,5 @@ return {
 			{ desc = 'Debug Nearest', silent = true })
 		vim.keymap.set('n', '<leader>ts', neotest.run.stop, { desc = 'Stop test' })
 		vim.keymap.set('n', '<leader>to', neotest.output_panel.toggle, { desc = 'Toggle output panel' })
-	end
+	end,
 }

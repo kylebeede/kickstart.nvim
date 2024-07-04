@@ -1,41 +1,34 @@
 ---------- CONFIGURE NVIM-CMP ----------
 -- See `:help cmp`
 
-local luasnip = require('luasnip')
--- require('luasnip.loaders.from_vscode').lazy_load()
-local cmp = require('cmp')
+local cmp = require 'cmp'
 -- local defaults = require('cmp.config.default')()
 
 cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  sources = cmp.config.sources(
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp', group_index = 1 },
+    { name = 'path',     group_index = 1 },
+    -- { name = 'luasnip' },
+  }, {
+    { name = 'buffer', group_index = 2 },
+  }, {
+    { name = 'copilot', group_index = 3 },
     {
-      { name = 'nvim_lsp', group_index = 1 },
-      { name = 'path',     group_index = 1 },
-      -- { name = 'luasnip' },
+      name = 'lazydev',
+      group_index = 0, -- set group index to 0 to skip loading LuaLS completions
     },
-    {
-      { name = 'buffer', group_index = 2 },
-    },
-    {
-      { name = 'copilot', group_index = 3 },
-    }
-  ),
+  }),
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    ['<S-CR>'] = cmp.mapping.confirm({
+    ['<C-l>'] = cmp.mapping.complete {},
+    ['<CR>'] = cmp.mapping.confirm { select = true }, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<S-CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
-    }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     ['<C-CR>'] = function(fallback)
       cmp.abort()
       fallback()

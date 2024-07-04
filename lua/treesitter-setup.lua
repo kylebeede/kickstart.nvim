@@ -4,13 +4,13 @@
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'c_sharp' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'c_sharp', 'json', 'xml' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
 
-    highlight = { enable = true },
-    indent = { enable = true },
+    highlight = { enable = true, disable = { 'log' } },
+    indent = { enable = true, disable = { 'log' } },
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -19,6 +19,7 @@ vim.defer_fn(function()
         scope_incremental = '<c-s>',
         node_decremental = '<M-space>',
       },
+      disable = { 'log' },
     },
     textobjects = {
       select = {
@@ -53,6 +54,7 @@ vim.defer_fn(function()
           ['[M'] = '@function.outer',
           ['[]'] = '@class.outer',
         },
+        disable = { 'log' },
       },
       swap = {
         enable = true,
@@ -62,6 +64,7 @@ vim.defer_fn(function()
         swap_previous = {
           ['<leader>A'] = '@parameter.inner',
         },
+        disable = { 'log' },
       },
     },
   }

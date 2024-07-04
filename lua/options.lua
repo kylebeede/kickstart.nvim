@@ -8,7 +8,7 @@ vim.g.maplocalleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.opt.fillchars = { eob = ' ', diff = '/' }
+vim.opt.fillchars = { eob = ' ', diff = '/', fold = ' ' }
 
 vim.opt.autoindent = true
 vim.opt.tabstop = 4
@@ -20,8 +20,8 @@ vim.opt.scrolloff = 12
 vim.o.hlsearch = false
 
 -- Active line has absolute line number, others relative
-vim.wo.number = true;
-vim.wo.relativenumber = true;
+vim.wo.number = true
+vim.wo.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -51,9 +51,6 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = true
-
 vim.o.cursorline = true
 
 vim.filetype.add {
@@ -61,5 +58,17 @@ vim.filetype.add {
     fsd = 'fsd',
   },
 }
+
+-- See https://github.com/kevinhwang91/nvim-ufo
+-- vim.o.foldcolumn = '0'
+-- vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+-- vim.o.foldlevelstart = 99
+-- vim.o.foldenable = true
+
+-- Enable folding
+vim.o.foldmethod = 'indent'
+
+-- Start with all folds open
+vim.o.foldlevelstart = 20
 
 -- vim: ts=2 sts=2 sw=2 et

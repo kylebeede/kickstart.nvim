@@ -1,6 +1,8 @@
+local telescopePickers = require 'telescope-pickers'
+
 ---------- CONFIGURE LSP ----------
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   -- Helper function to more easily define LSP related mappings
   local nmap = function(keys, func, desc)
     if desc then
@@ -14,7 +16,9 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap('gr', function()
+    telescopePickers.prettyLspReferences {}
+  end, '[G]oto [R]eferences')
   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
   nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -32,12 +36,18 @@ local on_attach = function(_, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
 
+  -- Client-specific mappings
+  if client.name == 'omnisharp' then
+    nmap('gd', require('omnisharp_extended').lsp_definition, '[G]oto [D]efinition')
+    nmap('gI', require('omnisharp_extended').lsp_implementation, '[Goto] [I]mplementation')
+    nmap('<leader>D', require('omnisharp_extended').lsp_type_definition, 'Type [D]efinition')
+  end
+
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
 end
-
 
 ---------- CONFIGURE MASON ----------
 -- mason-lspconfig requires that these setup functions are called in this order
@@ -46,25 +56,51 @@ require('mason').setup()
 require('mason-lspconfig').setup()
 
 -- Enable the following language servers
---  If you want to override the default filetypes that your language server will attach to you can
---  define the property 'filetypes' to the map in question.
 local servers = {
-  -- rust_analyzer = {},
-  tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
+    settings = {
+      Lua = {
+        telemetry = { enable = false },
+      },
+    },
+  },
+  lemminx = {
+    filetypes = { 'xml', 'config' },
+  },
+  tsserver = {},
+  omnisharp = {
+    filetypes = { 'cs', 'vb' },
+    settings = {
+      FormattingOptions = {
+        -- Enables support for reading code style, naming convention and analyzer
+        -- settings from .editorconfig.
+        EnableEditorConfigSupport = true,
+        -- Specifies whether 'using' directives should be grouped and sorted during
+        -- document formatting.
+        OrganizeImports = true,
+      },
+      RoslynExtensionsOptions = {
+        -- Enables support for roslyn analyzers, code fixes and rulesets.
+        EnableAnalyzersSupport = true,
+        -- Enables support for showing unimported types and unimported extension
+        -- methods in completion lists. When committed, the appropriate using
+        -- directive will be added at the top of the current file. This option can
+        -- have a negative impact on initial completion responsiveness,
+        -- particularly for the first few completion sessions after opening a
+        -- solution.
+        EnableImportCompletion = true,
+        -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+        -- true
+        AnalyzeOpenDocumentsOnly = nil,
+      },
     },
   },
 }
 
--- Setup neovim lua configuration
-require('neodev').setup()
-
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- Plugins that need to modify capabilities can do so here
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Ensure the servers above are installed
@@ -77,8 +113,9 @@ mason_lspconfig.setup_handlers {
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
       on_attach = on_attach,
-      settings = servers[server_name],
+      settings = (servers[server_name] or {}).settings,
       filetypes = (servers[server_name] or {}).filetypes,
+      handlers = (servers[server_name] or {}).handlers,
     }
   end,
 }
