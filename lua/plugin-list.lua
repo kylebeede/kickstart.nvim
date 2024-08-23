@@ -19,6 +19,9 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  -- Useful status updates for LSP
+  { 'j-hui/fidget.nvim',    tag = 'legacy', opts = {} },
+
   -- LSP configuration & plugins
   {
     'neovim/nvim-lspconfig',
@@ -27,24 +30,16 @@ require('lazy').setup({
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
 
-      -- Useful status updates for LSP
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      'j-hui/fidget.nvim',
 
       -- Additional LuaLS configuration for editing Neovim config
       {
         'folke/lazydev.nvim',
         ft = 'lua', -- only load on lua files
-        opts = {
-          library = {
-            -- See the configuration section for more details
-            -- Load luvit types when the `vim.uv` word is found
-            { path = 'luvit-meta/library', words = { 'vim%.uv' } },
-          },
-        },
+        opts = {},
       },
     },
   },
-  { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
@@ -439,18 +434,18 @@ require('lazy').setup({
     },
   },
 
-  -- Markdown previewing
+  -- Inline markdown previewing
   {
-    'toppair/peek.nvim',
-    event = { 'VeryLazy' },
-    build = 'deno task --quiet build:fast',
-    config = function()
-      require('peek').setup {
-        theme = 'light',
-      }
-      vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
-      vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
-    end,
+    'OXY2DEV/markview.nvim',
+    ft = 'markdown',
+
+    dependencies = {
+      -- You may not need this if you don't lazy load
+      -- Or if the parsers are in your $RUNTIMEPATH
+      'nvim-treesitter/nvim-treesitter',
+
+      'nvim-tree/nvim-web-devicons',
+    },
   },
 
   -- Improved C# LSP support
