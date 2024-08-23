@@ -41,21 +41,6 @@ function M.dap_setup(_, opts)
     },
   }
 
-  vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-  vim.keymap.set('n', '<F1>', dap.step_over, { desc = 'Debug: Step Over' })
-  vim.keymap.set('n', '<F2>', dap.step_into, { desc = 'Debug: Step Into' })
-  vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
-  vim.keymap.set('n', '<leader>dt', dap.terminate, { desc = 'Terminate' })
-  vim.keymap.set('n', '<leader>dc', dap.run_to_cursor, { desc = 'Run to cursor' })
-  vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = 'Toggle breakpoint' })
-  vim.keymap.set('n', '<leader>dB', function()
-    dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-  end, { desc = 'Set breakpoint' })
-  vim.keymap.set('n', '<leader>de', dapui.eval, { desc = 'Eval window' })
-  --
-  -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-  vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
-
   -- Dap adapter setup
   dap.adapters.netcoredbg = {
     type = 'executable',
@@ -68,15 +53,17 @@ function M.dap_setup(_, opts)
     -- Used with test runner
     {
       type = 'netcoredbg',
-      name = "netcoredbg",
+      name = 'netcoredbg',
       request = 'attach',
     },
     -- Used to attach to process
     {
       type = 'netcoredbg',
-      name = "netcoredbg - pick",
+      name = 'netcoredbg - pick',
       request = 'attach',
-      processId = function() return require('dap.utils').pick_process({ filter = "Faithlife" }) end
+      processId = function()
+        return require('dap.utils').pick_process { filter = 'Faithlife' }
+      end,
     },
   }
 
