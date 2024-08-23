@@ -41,5 +41,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+-- Prints the line diagnostic
+local diagnostic_group = vim.api.nvim_create_augroup('DiagnosticEcho', { clear = true })
+vim.api.nvim_create_autocmd('CursorHold', {
+  callback = function()
+    require('echo_diagnostic').echo_diagnostic()
+  end,
+  group = diagnostic_group,
+  pattern = '*',
+})
+
 -- See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
