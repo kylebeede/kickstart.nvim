@@ -16,6 +16,8 @@ require 'cmp-setup'
 
 require 'autoformat'
 
+require 'autocmd'
+
 -- Configure keymaps & whichkey
 require 'keymaps'
 
@@ -29,27 +31,6 @@ vim.g.github_enterprise_urls = { 'git.faithlife.dev' }
 vim.cmd [[
   command! -nargs=* -complete=file Browse execute '!open ' .. shellescape(<q-args>)
 ]]
-
--- [[ Highlight on yank ]]
--- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-  group = highlight_group,
-  pattern = '*',
-})
-
--- Prints the line diagnostic
-local diagnostic_group = vim.api.nvim_create_augroup('DiagnosticEcho', { clear = true })
-vim.api.nvim_create_autocmd('CursorHold', {
-  callback = function()
-    require('echo_diagnostic').echo_diagnostic()
-  end,
-  group = diagnostic_group,
-  pattern = '*',
-})
 
 -- See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
