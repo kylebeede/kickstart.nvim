@@ -1,5 +1,3 @@
-local telescopePickers = require 'telescope-pickers'
-
 ---------- CONFIGURE LSP ----------
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)

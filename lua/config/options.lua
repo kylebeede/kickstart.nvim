@@ -1,12 +1,15 @@
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+-- TODO: research this
+-- vim.loader.enable()
 
 -- disable netrw (for nvim-tree)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- enable 24-bit colour
+vim.opt.termguicolors = true
 
 vim.opt.fillchars = { eob = ' ', diff = '/', fold = ' ' }
 
@@ -27,8 +30,6 @@ vim.wo.relativenumber = true
 vim.o.mouse = 'a'
 
 -- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
 vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
@@ -58,12 +59,6 @@ vim.filetype.add {
     fsd = 'fsd',
   },
 }
-
--- See https://github.com/kevinhwang91/nvim-ufo
--- vim.o.foldcolumn = '0'
--- vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
--- vim.o.foldlevelstart = 99
--- vim.o.foldenable = true
 
 -- Enable folding
 vim.o.foldmethod = 'indent'

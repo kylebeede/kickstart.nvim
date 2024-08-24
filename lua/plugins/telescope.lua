@@ -1,5 +1,3 @@
-local telescopePickers = require 'telescope-pickers'
-
 ---@diagnostic disable-next-line: unused-local
 local function custom_path_display(opts, path)
   local cwd = vim.loop.cwd()
@@ -60,47 +58,57 @@ local function custom_path_display(opts, path)
   return display_name .. ' ' .. lastPart
 end
 
-local function remove_reference_line(opts, path)
-  local segments = vim.split(path, ' | ')
-
-  if #segments > 1 then
-    return segments[1]
-  end
-
-  return path
-end
-
-local _actions = require 'telescope.actions'
-require('telescope').setup {
-  defaults = {
-    show_dotfiles = true,
-    file_ignore_patterns = { '%.g%.cs$', '%.png$' },
-    path_display = custom_path_display,
-    shorten_path = true,
-    mappings = {
-      i = {
-        ['<C-x>'] = _actions.delete_buffer,
+return {
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      -- Fuzzy Finder Algorithm which requires local dependencies to be built.
+      -- Only load if `make` is available. Make sure you have the system
+      -- requirements installed.
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        -- NOTE: If you are having trouble with this installation,
+        --       refer to the README for telescope-fzf-native for more instructions.
+        build = 'make',
+        cond = function()
+          return vim.fn.executable 'make' == 1
+        end,
       },
+      { 'nvim-telescope/telescope-github.nvim' },
+      { 'nvim-telescope/telescope-dap.nvim' },
     },
-  },
-  pickers = {
-    jumplist = {
-      fname_width = 100,
-      path_display = { 'tail' },
-      previewer = true,
-      theme = 'ivy',
-    },
-    lsp_references = {
-      fname_width = 100,
-      previewer = true,
-    },
+    config = function()
+      local telescope = require 'telescope'
+      local actions = require 'telescope.actions'
+      telescope.setup {
+        defaults = {
+          show_dotfiles = true,
+          file_ignore_patterns = { '%.g%.cs$', '%.png$' },
+          path_display = custom_path_display,
+          shorten_path = true,
+          mappings = {
+            i = {
+              ['<C-x>'] = actions.delete_buffer,
+            },
+          },
+        },
+        pickers = {
+          jumplist = {
+            fname_width = 100,
+            path_display = { 'tail' },
+            previewer = true,
+            theme = 'ivy',
+          },
+          lsp_references = {
+            fname_width = 100,
+            previewer = true,
+          },
+        },
+      }
+      require('telescope').load_extension 'fzf'
+      require('telescope').load_extension 'dap'
+    end,
   },
 }
-
--- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
-
--- Enable telescope dap
-pcall(require('telescope').load_extension, 'dap')
-
--- vim: ts=2 sts=2 sw=2 et

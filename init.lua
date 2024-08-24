@@ -1,25 +1,16 @@
-require 'options'
+require 'config.options'
 
-require 'lazy-setup'
+require 'config.lazy-setup'
 
-require 'plugin-list'
+require 'config.lsp-setup'
 
-require 'telescope-setup'
+require 'config.cmp-setup'
 
-require 'treesitter-setup'
+require 'config.autoformat'
 
-require 'lsp-setup'
+require 'config.autocmd'
 
-require 'copilot-setup'
-
-require 'cmp-setup'
-
-require 'autoformat'
-
-require 'autocmd'
-
--- Configure keymaps & whichkey
-require 'keymaps'
+require 'config.keymaps'
 
 -- Enable colorscheme
 vim.cmd [[colorscheme nightfly]]
