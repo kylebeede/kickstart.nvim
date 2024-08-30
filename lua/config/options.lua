@@ -54,11 +54,11 @@ vim.o.completeopt = 'menuone,noselect'
 
 vim.o.cursorline = true
 
-vim.filetype.add {
-  extension = {
-    fsd = 'fsd',
-  },
-}
+vim.filetype.add({
+    extension = {
+        fsd = 'fsd',
+    },
+})
 
 -- Enable folding
 vim.o.foldmethod = 'indent'
