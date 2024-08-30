@@ -2,6 +2,9 @@
 -- See `:help cmp`
 
 local cmp = require 'cmp'
+local winhighlight = {
+  winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel',
+}
 -- local defaults = require('cmp.config.default')()
 
 cmp.setup {
@@ -51,6 +54,10 @@ cmp.setup {
         fallback()
       end
     end, { 'i', 's' }),
+  },
+  window = {
+    completion = cmp.config.window.bordered(winhighlight),
+    documentation = cmp.config.window.bordered(winhighlight),
   },
 }
 
