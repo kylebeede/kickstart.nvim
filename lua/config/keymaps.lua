@@ -15,9 +15,13 @@ end
 
 local original_cwd = vim.fn.getcwd()
 local function open_custom_filepicker()
-    local telescopePickers = require('telescope-pickers')
+    local telescopeBuiltins = require('telescope.builtin')
+    telescopeBuiltins.find_files({ cwd = original_cwd })
+end
 
-    telescopePickers.prettyFilesPicker({ picker = 'find_files', options = { cwd = original_cwd } })
+local function open_custom_grep()
+    local telescopeBuiltins = require('telescope.builtin')
+    telescopeBuiltins.live_grep({ cwd = original_cwd })
 end
 
 local function fzf_filepicker()
@@ -27,11 +31,6 @@ local function fzf_filepicker()
     if input ~= '' then
         fzf.files({ cwd = input })
     end
-end
-
-local function open_custom_grep()
-    local telescopePickers = require('telescope-pickers')
-    telescopePickers.prettyGrepPicker({ picker = 'live_grep' })
 end
 
 local function set_conditional_breakpoint()
@@ -194,8 +193,8 @@ vim.keymap.set('n', '<Down>', '<cmd>horizontal res -5<cr>', { desc = 'Decrease w
 --                                   ╰──────╯
 vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { desc = '[G]oto [D]efinition' })
 vim.keymap.set('n', 'gr', function()
-    local telescopePickers = require('telescope-pickers')
-    telescopePickers.prettyLspReferences({ picker = 'lsp_references' })
+    local telescopeBuiltins = require('telescope.builtin')
+    telescopeBuiltins.lsp_references()
 end, { desc = '[G]oto [R]eferences' })
 vim.keymap.set('n', 'gI', require('telescope.builtin').lsp_implementations, { desc = '[G]oto [I]mplementation' })
 vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, { desc = '[D]ocument [S]ymbols' })
@@ -343,7 +342,7 @@ require('which-key').add({
     { '<leader>so', '<Cmd>Telescope oldfiles<Cr>', desc = 'Search [O]ldfiles' },
     { '<leader>sb', '<Cmd>Telescope buffers<Cr>', desc = 'Search [B]uffers' },
     { '<leader>sf', open_custom_filepicker, desc = 'Search [F]iles' },
-    { '<leader>sF', fzf_filepicker, desc = 'Search [F]iles in home dir' },
+    { '<leader>sF', fzf_filepicker, desc = 'Search [F]iles in dir' },
     { '<leader>sh', '<Cmd>Telescope help_tags<Cr>', desc = 'Search [H]elp' },
     { '<leader>sw', '<Cmd>Telescope grep_string<Cr>', desc = '[S]earch current [W]ord' },
     { '<leader>sg', open_custom_grep, desc = '[S]earch by [G]rep' },
@@ -352,7 +351,7 @@ require('which-key').add({
     { '<leader>sj', '<Cmd>Telescope jumplist<Cr>', desc = '[S]earch [J]umplist' },
     { '<leader>sG', '<Cmd>Telescope git_files<Cr>', desc = '[S]earch [G]it files' },
     { '<leader>sz', '<cmd>Telescope spell_suggest<cr>', desc = 'Spelling suggestions' },
-    { '<leader>sk', '<cmd>Telescope keymaps<cr>', desc = '[K]eymap list' },
+    { '<leader>sk', '<cmd>Telescope keymaps<cr>', desc = '[S]earch [K]eymaps' },
     {
         '<leader>sc',
         "<Cmd>lua require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown { winblend = 10, previewer = false })<CR>",

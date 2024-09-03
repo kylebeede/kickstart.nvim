@@ -61,7 +61,7 @@ end
 return {
     {
         'nvim-telescope/telescope.nvim',
-        branch = '0.1.x',
+        branch = 'master',
         dependencies = {
             'nvim-lua/plenary.nvim',
             -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -86,24 +86,29 @@ return {
                 defaults = {
                     show_dotfiles = true,
                     file_ignore_patterns = { '%.g%.cs$', '%.png$' },
-                    -- path_display = custom_path_display,
                     shorten_path = true,
                     mappings = {
                         i = {
                             ['<C-x>'] = actions.delete_buffer,
                         },
                     },
+                    path_display = {
+                        filename_first = {
+                            reverse_directories = false,
+                        },
+                    },
                 },
                 pickers = {
                     jumplist = {
-                        fname_width = 100,
-                        path_display = { 'tail' },
+                        fname_width = 40,
                         previewer = true,
+                        show_line = false,
                         theme = 'ivy',
                     },
                     lsp_references = {
                         fname_width = 100,
                         previewer = true,
+                        show_line = false,
                     },
                 },
             })
