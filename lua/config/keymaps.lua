@@ -416,12 +416,5 @@ require('which-key').add({
     { '<leader>uM', '<cmd>Neominimap bufToggle<cr>', desc = 'Toggle buffer [m]inimap' },
     { '<leader>ug', '<cmd>IBLToggle<cr>', desc = 'Toggle indentation [g]uides' },
     { '<leader>us', toggle_statusline, desc = 'Toggle [s]tatus line' },
-
-    -- ── Zen Mode ────────────────────────────────────────────────────────
-    { '<leader>uz', group = 'Zen', icon = { icon = icons.ui.Ellipsis } },
-    { '<leader>uzn', '<cmd>TZNarrow<cr>', desc = 'Zen Mode - [N]arrow' },
-    { '<leader>uzf', '<cmd>TZFocus<cr>', desc = 'Zen Mode - [F]ocus' },
-    { '<leader>uzm', '<cmd>TZMinimalist<cr>', desc = 'Zen Mode - [M]inimalist' },
-    { '<leader>uza', '<cmd>TZAtaraxis<cr>', desc = 'Zen Mode - [A]taraxis' },
-    -- ── /Zen Mode ────────────────────────────────────────────────────────
+    { '<leader>uz', '<cmd>ZenMode<cr>', desc = 'Zen Mode' },
 })

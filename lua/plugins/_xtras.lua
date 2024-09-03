@@ -19,33 +19,38 @@ return {
         },
     },
 
-    -- distraction-free ui
+    -- zen mode
     {
-        'Pocco81/true-zen.nvim',
-        cmd = { 'TZNarrow', 'TZFocus', 'TZMinimalist', 'TZAtaraxis' },
-        config = function()
-            require('true-zen').setup({
-                modes = {
-                    options = {
-                        number = true,
-                        relativenumber = true,
-                        ruler = true,
-                    },
-                    ataraxis = {
-                        minimum_writing_area = { -- minimum size of main window
-                            width = 90,
-                            height = 44,
-                        },
-                        padding = { -- padding windows
-                            left = 20,
-                            right = 20,
-                            top = 0,
-                            bottom = 0,
-                        },
-                    },
+        'folke/zen-mode.nvim',
+        cmd = 'ZenMode',
+        dependencies = { 'folke/twilight.nvim' },
+        opts = {
+            window = {
+                backdrop = 0.95, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
+                width = 160,
+            },
+            options = {
+                enabled = true,
+                ruler = false, -- disables the ruler text in the cmd line area
+                showcmd = false, -- disables the command in the last line of the screen
+                laststatus = 0, -- turn off the statusline
+            },
+            plugins = {
+                tmux = { enabled = true },
+                alacritty = {
+                    enabled = false,
+                    font = '14', -- change font size
                 },
-            })
-        end,
+            },
+        },
+    },
+
+    -- dims inactive portions of code
+    {
+        'folke/twilight.nvim',
+        opts = {
+            alpha = 0.1, -- this does not seem to work
+        },
     },
 
     -- obsidian note integration
@@ -128,9 +133,14 @@ return {
         'ibhagwan/fzf-lua',
         -- optional for icon support
         dependencies = { 'nvim-tree/nvim-web-devicons' },
-        config = function()
+        opts = {
+            files = {
+                formatter = 'path.filename_first',
+            },
+        },
+        config = function(_, opts)
             -- calling `setup` is optional for customization
-            -- require('fzf-lua').setup {}
+            require('fzf-lua').setup({ 'telescope', opts })
         end,
     },
 }
